@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 project(drogon)
 
@@ -111,6 +111,9 @@ if (WIN32)
         ${PROJECT_NAME}
         PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/third_party/mman-win32>)
 endif (WIN32)
+
+include(Dependencies.cmake)
+add_external_dependencies()
 
 if(USE_SUBMODULE)
 add_subdirectory(trantor)
