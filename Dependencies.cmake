@@ -4,7 +4,7 @@ include(cmake/CPM.cmake)
 function(add_external_dependencies)
 
 CPMAddPackage(
-  NAME Trantor::Trantor
+  NAME trantor
   GITHUB_REPOSITORY an-tao/trantor
   GIT_TAG master
   OPTIONS
