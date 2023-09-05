@@ -84,6 +84,13 @@ static void newTestMainFile(std::ofstream &mainFile)
     mainFile << templ->genText();
 }
 
+static void newCpmCmakeFile(std::ofstream &cpmCmakeFile)
+{
+    HttpViewData data;
+    auto templ = DrTemplateBase::newTemplate("cpm.csp");
+    cpmCmakeFile << templ->genText(data);
+}
+
 static void newTestCmakeFile(std::ofstream &testCmakeFile,
                              const std::string &projectName)
 {
@@ -120,6 +127,7 @@ void create_project::createProject(const std::string &projectName)
     newCmakeFile(cmakeFile, projectName);
     std::ofstream mainFile("main.cc", std::ofstream::out);
     newMainFile(mainFile);
+    drogon::utils::createPath("cmake");
     drogon::utils::createPath("views");
     drogon::utils::createPath("controllers");
     drogon::utils::createPath("filters");
@@ -127,6 +135,9 @@ void create_project::createProject(const std::string &projectName)
     drogon::utils::createPath("build");
     drogon::utils::createPath("models");
     drogon::utils::createPath("test");
+
+    std::ofstream testCmakeCpm("cmake/CPM.cmake", std::ofstream::out);
+    newCpmCmakeFile(testCmakeCpm);
 
     std::ofstream gitFile(".gitignore", std::ofstream::out);
     newGitIgFile(gitFile);

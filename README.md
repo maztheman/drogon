@@ -1,11 +1,14 @@
 ![](https://github.com/an-tao/drogon/wiki/images/drogon-white17.jpg)
 
-[![Build Status](https://github.com/an-tao/drogon/workflows/Build%20Drogon/badge.svg?branch=master)](https://github.com/drogonframework/drogon/actions)
+[![Build Status](https://github.com/maztheman/drogon/actions/workflows/cmake.yml/badge.svg)](https://github.com/maztheman/drogon/actions/workflows/cmake.yml)
 [![Join the chat at https://gitter.im/drogon-web/community](https://badges.gitter.im/drogon-web/community.svg)](https://gitter.im/drogon-web/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Join the telegram group at https://t.me/joinchat/_mMNGv0748ZkMDAx](https://img.shields.io/badge/Telegram-2CA5E0?style=flat&logo=telegram&logoColor=white)](https://t.me/joinchat/_mMNGv0748ZkMDAx)
 [![Docker image](https://img.shields.io/badge/Docker-image-blue.svg)](https://cloud.docker.com/u/drogonframework/repository/docker/drogonframework/drogon)
 
 English | [简体中文](./README.zh-CN.md) | [繁體中文](./README.zh-TW.md)
+### This fork
+- Adding support for CPM statically linked libraries
+
 ### Overview
 **Drogon** is a C++17/20 based HTTP application framework. Drogon can be used to easily build various types of web application server programs using C++. **Drogon** is the name of a dragon in the American TV series "Game of Thrones" that I really like.
 

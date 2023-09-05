@@ -55,7 +55,8 @@ else()
                      /opt/local/lib
                      /opt/csw/lib
                      /opt/lib
-                     /usr/freeware/lib64)
+                     /usr/freeware/lib64
+                     /usr/lib/x86_64-linux-gnu)
 
   find_library(UUID_LIBRARY_DEBUG
                NAMES uuidd
@@ -74,7 +75,8 @@ else()
                      /opt/local/lib
                      /opt/csw/lib
                      /opt/lib
-                     /usr/freeware/lib64)
+                     /usr/freeware/lib64
+                     /usr/lib/x86_64-linux-gnu)
 
   if(NOT UUID_LIBRARY AND (BSD OR APPLE))
     set(UUID_LIBRARY "")

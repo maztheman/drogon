@@ -13,13 +13,13 @@ src_dir=$(pwd)
 echo "OS:" $os
 
 if [ "X$os" = "Xlinux" ]; then
-  drogon_ctl_exec=$(pwd)/build/drogon_ctl/drogon_ctl
+  drogon_ctl_exec=$(pwd)/build/bin/drogon_ctl
 else
-  drogon_ctl_exec=$(pwd)/build/drogon_ctl/Debug/drogon_ctl.exe
+  drogon_ctl_exec=$(pwd)/build/bin/Debug/drogon_ctl.exe
   export PATH=$PATH:$src_dir/install/bin
 fi
 echo ${drogon_ctl_exec}
-cd build/lib/tests/
+cd build/bin/
 
 if [ "X$os" = "Xwindows" ]; then
   cd Debug

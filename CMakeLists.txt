@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 project(drogon)
 
@@ -9,6 +9,7 @@ option(BUILD_EXAMPLES "Build examples" ON)
 option(BUILD_ORM "Build orm" ON)
 option(COZ_PROFILING "Use coz for profiling" OFF)
 option(BUILD_SHARED_LIBS "Build drogon as a shared lib" OFF)
+option(BUILD_TESTING "Build tests" OFF)
 option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(BUILD_BROTLI "Build Brotli" ON)
 option(BUILD_YAML_CONFIG "Build yaml config" ON)
@@ -91,12 +92,7 @@ elseif (HAS_ANY AND HAS_STRING_VIEW AND HAS_COROUTINE)
 else ()
     set(DROGON_CXX_STANDARD 17)
 endif ()
-if(USE_SUBMODULE)
-    target_include_directories(
-            ${PROJECT_NAME}
-            PUBLIC
-            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/trantor>)
-endif()
+
 target_include_directories(
     ${PROJECT_NAME}
     PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/lib/inc>
@@ -112,13 +108,11 @@ if (WIN32)
         PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/third_party/mman-win32>)
 endif (WIN32)
 
-if(USE_SUBMODULE)
-add_subdirectory(trantor)
-target_link_libraries(${PROJECT_NAME} PUBLIC trantor)
-else()
-find_package(Trantor CONFIG REQUIRED)
+include(Dependencies.cmake)
+add_external_dependencies()
+
+#trantor
 target_link_libraries(${PROJECT_NAME} PUBLIC Trantor::Trantor)
-endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Haiku")
     target_link_libraries(${PROJECT_NAME} PRIVATE network)
@@ -163,35 +157,13 @@ if(TARGET std::filesystem)
   endif()
 endif()
 
-
 # jsoncpp
-find_package(Jsoncpp REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC Jsoncpp_lib)
-list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC jsoncpp_static)
 
 # yamlcpp
 if(BUILD_YAML_CONFIG)
-    find_package(yaml-cpp QUIET)
-    if(yaml-cpp_FOUND)
-        if (NOT YAML_CPP_LIBRARIES)
-            find_library(YAML_CPP_LINK_LIBRARY "yaml-cpp")
-            if(NOT YAML_CPP_LINK_LIBRARY)
-                message(STATUS "yaml-cpp not used")
-            else()
-                message(STATUS "yaml-cpp found ")
-                target_link_libraries(${PROJECT_NAME} PUBLIC ${YAML_CPP_LINK_LIBRARY})
-                target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_YAML_CPP)
-            endif()
-        else()
-            message(STATUS "yaml-cpp found ")
-            target_link_libraries(${PROJECT_NAME} PUBLIC ${YAML_CPP_LIBRARIES})
-            target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_YAML_CPP)
-        endif()
-    else()
-        message(STATUS "yaml-cpp not used")
-    endif()
-else()
-    message(STATUS "yaml-cpp not used")
+    target_link_libraries(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:yaml-cpp>)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_YAML_CPP)
 endif(BUILD_YAML_CONFIG)
 
 if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD"
@@ -226,7 +198,7 @@ if (BUILD_BROTLI)
         add_definitions(-DUSE_BROTLI)
         target_link_libraries(${PROJECT_NAME} PRIVATE Brotli_lib)
     endif (Brotli_FOUND)
-endif (BUILD_BROTLI)
+endif(BUILD_BROTLI)
 
 set(DROGON_SOURCES
     lib/src/AOPAdvice.cc
@@ -476,8 +448,7 @@ if (BUILD_TESTING)
     add_subdirectory(nosql_lib/redis/tests)
 endif (BUILD_TESTING)
 
-find_package(ZLIB REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+target_link_libraries(${PROJECT_NAME} PRIVATE $<BUILD_INTERFACE:ZLIB::ZLIB>)
 
 execute_process(COMMAND "git" rev-parse HEAD
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"

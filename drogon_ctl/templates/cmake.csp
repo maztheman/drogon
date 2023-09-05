@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 project([[ProjectName]] CXX)
 
 include(CheckIncludeFileCXX)
@@ -28,8 +28,15 @@ add_executable(${PROJECT_NAME} main.cc)
 # target_link_libraries(${PROJECT_NAME} PRIVATE drogon)
 #
 # and comment out the following lines
-find_package(Drogon CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
+include(cmake/CPM.cmake)
+CPMAddPackage(
+    NAME drogon
+    GITHUB_REPOSITORY maztheman/drogon
+    GIT_TAG master
+    OPTIONS
+    "BUILD_TESTING OFF" "BUILD_SHARED_LIBS OFF"   
+)
+target_link_libraries(${PROJECT_NAME} PRIVATE drogon)
 
 # ##############################################################################
 
