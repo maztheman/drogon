@@ -115,7 +115,7 @@ endif (WIN32)
 include(Dependencies.cmake)
 add_external_dependencies()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Trantor::Trantor)
+target_link_libraries(${PROJECT_NAME} PUBLIC trantor)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Haiku")
     target_link_libraries(${PROJECT_NAME} PRIVATE network)
