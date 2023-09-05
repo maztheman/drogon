@@ -3,7 +3,13 @@ include(cmake/CPM.cmake)
 
 function(add_external_dependencies)
 
-CPMAddPackage("gh:an-tao/trantor#master")
+CPMAddPackage(
+  NAME Trantor::Trantor
+  GITHUB_REPOSITORY an-tao/trantor
+  GIT_TAG master
+  OPTIONS
+  "BUILD_TESTING OFF"
+)
 CPMFindPackage(
   NAME jsoncpp
   GITHUB_REPOSITORY open-source-parsers/jsoncpp
